@@ -1,0 +1,33 @@
+@import "~vue-multiselect/dist/vue-multiselect.min.css";
+
+header.modal-header {
+    background-color: #2d2e31;
+}
+
+div.modal-body {
+    background-color: #2d2e31;
+}
+
+div.modal-backdrop {
+    opacity: 0.7;
+}
+
+button.close {
+    color: #fff;
+}
+
+.item-container {
+    margin: 0;
+}
+.item {
+    padding: 1rem;
+    border: solid black 1px;
+    background-color: #2d2e31;
+
+    i.mdi {
+        font-size: 25px;
+    }
+}
+.item-sub {
+    margin: 0 0 0 1rem;
+}

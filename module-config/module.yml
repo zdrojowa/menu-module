@@ -1,0 +1,7 @@
+name: MenuModule
+version: 1.0.0
+
+aclAnchor: MenuModule
+aclName: Moduł menu
+
+routePrefix: MenuModule

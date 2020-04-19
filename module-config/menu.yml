@@ -1,0 +1,5 @@
+pages:
+  name: Moduł menu
+  icon: mdi mdi-menu
+  permission: MenuModule.menu
+  route: MenuModule::index

@@ -1,0 +1,64 @@
+index:
+  path: /dashboard/menu
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@index
+  methods:
+    - GET
+  permission: MenuModule.menu
+
+get:
+  path: /dashboard/menu/get
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@get
+  methods:
+    - POST
+    - GET
+  permission: MenuModule.menu
+
+add:
+  path: /dashboard/menu/add
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@add
+  methods:
+    - GET
+  permission: MenuModule.menu
+
+store:
+  path: /dashboard/menu/store
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@store
+  methods:
+    - POST
+  permission: MenuModule.menu
+
+edit:
+  path: /dashboard/menu/{{menu}}/edit
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@edit
+  methods:
+    - GET
+  permission: MenuModule.menu
+
+update:
+  path: /dashboard/menu/{{menu}}
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@update
+  methods:
+    - PUT
+    - PATCH
+  permission: MenuModule.menu
+
+destroy:
+  path: /dashboard/menu/destroy/{{menu}}
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@destroy
+  methods:
+    - DELETE
+  permission: MenuModule.menu
+
+types:
+  path: /dashboard/menu/types
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@types
+  methods:
+    - GET
+  permission: MenuModule.menu
+
+addTranslation:
+  path: /dashboard/menu/add-translation/{{menu}}/{lang}
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@addTranslation
+  methods:
+    - GET
+  permission: MenuModule.menu

@@ -80,8 +80,8 @@ class Menu extends Model
                     unset($structure[$i]);
                 }
             }
-            if (isset($structure['elements'])) {
-                $structure['elements'] = self::changeStructure($item['elements'], $page, $action);
+            if (isset($item['elements'])) {
+                $structure[$i]['elements'] = self::changeStructure($item['elements'], $page, $action);
             }
         }
         return $structure;

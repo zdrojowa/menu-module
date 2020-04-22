@@ -20,8 +20,8 @@
                     </b-button>
                 </div>
             </div>
-            <modal :id="key(el)" :item="el" @save="save(index, $event)"></modal>
-            <nested class="item-sub" :list="el.elements" />
+            <modal :id="key(el)" :item="el" :types="types" :lang="lang" @save="save(index, $event)"></modal>
+            <nested class="item-sub" :list="el.elements" :types="types"/>
         </div>
     </draggable>
 </template>
@@ -39,13 +39,21 @@
                 required: false,
                 type: Array,
                 default: null
+            },
+            types: {
+                required: false,
+                type: Array,
+                default: []
+            },
+            lang: {
+                required: false,
+                type: String,
+                default: 'pl'
             }
         },
 
         data() {
             return {
-                name: '',
-                url: ''
             };
         },
 
@@ -64,6 +72,7 @@
                 };
             }
         },
+
         methods: {
 
             remove(index) {
@@ -76,8 +85,10 @@
 
                 this.$bvModal.hide(this.key(element));
 
+                element.id            = $event.id;
                 element.name          = $event.name;
                 element.url           = $event.url;
+                element.type          = $event.type;
                 this.realValue[index] = element;
 
                 this.$emit("input", this.realValue);

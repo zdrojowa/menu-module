@@ -6,6 +6,6 @@ use MyCLabs\Enum\Enum;
 
 class Type extends Enum
 {
-    protected const LINK = 'link';
     protected const PAGE = 'page';
+    protected const LINK = 'link';
 }

@@ -9,6 +9,7 @@ use Selene\Modules\DashboardModule\ZdrojowaTable;
 use Selene\Modules\LanguageModule\Models\Language;
 use Selene\Modules\MenuModule\Models\Menu;
 use Selene\Modules\MenuModule\Support\Type;
+use Selene\Modules\RevisionModule\Models\Revision;
 use Selene\Modules\SettingsModule\Models\Setting;
 
 class MenuController extends Controller {
@@ -81,7 +82,12 @@ class MenuController extends Controller {
     public function edit(Menu $menu) {
         return view('MenuModule::edit', [
             'menu' => $menu,
-            'lang' => $menu->lang
+            'lang' => $menu->lang,
+            'revisions' => Revision::query()->where('table', '=', 'menu')
+                ->where('content_id', '=', $menu->_id)
+                ->orderByDesc('_id')
+                ->limit(50)
+                ->get()
         ]);
     }
 
@@ -148,6 +154,18 @@ class MenuController extends Controller {
                 }
             }
         }
+
+        $menu->refresh();
+
+        Revision::create([
+            'table' => 'menu',
+            'action' => $action,
+            'content_id' => $menu->id,
+            'content' => json_encode($menu),
+            'created_at' => now(),
+            'user_id' => $request->user()->id
+        ]);
+        
         return $menu;
     }
 
@@ -157,16 +175,28 @@ class MenuController extends Controller {
 
             $id = $menu->_id;
 
-            $translations = array_diff(json_decode($menu->translations, true), [$menu->_id]);
+            if (!empty($menu->translations)) {
+                $translations = array_diff(json_decode($menu->translations, true), [$menu->_id]);
 
-            foreach ($translations as $id) {
-                $translation = Menu::where('_id', '=', $id)->first();
-                if ($translation) {
-                    $translation->translations = json_encode(array_values(array_diff($translations, [$id])));
-                    $translation->save();
+                foreach ($translations as $id) {
+                    $translation = Menu::where('_id', '=', $id)->first();
+                    if ($translation) {
+                        $translation->translations = json_encode(array_values(array_diff($translations, [$id])));
+                        $translation->save();
+                    }
                 }
             }
+            
             $menu->delete();
+
+            Revision::create([
+                'table' => 'menu',
+                'action' => 'deleted',
+                'content_id' => $id,
+                'content' => null,
+                'created_at' => now(),
+                'user_id' => $request->user()->id
+            ]);
 
             $request->session()->flash('alert-success', 'Menu zostało usunęte');
         } catch (\Exception $e) {
@@ -185,5 +215,18 @@ class MenuController extends Controller {
 
     public function addTranslation(Menu $menu, $lang) {
         return view('MenuModule::edit', ['menu' => $menu, 'lang' => $lang]);
+    }
+
+    public function check($id, Request $request): JsonResponse
+    {
+        $menu = Menu::query()->where('_id', '!=', $id);
+
+        if ($request->has('lang')) {
+            $menu->where('lang', '=', $request->get('lang'));
+        }
+        if ($request->has('name')) {
+            $menu->where('name', '=', $request->get('name'));
+        }
+        return response()->json(!$menu->exists());
     }
 }

@@ -3,9 +3,13 @@
 namespace Selene\Modules\MenuModule\Models;
 
 use Jenssegers\Mongodb\Eloquent\Model;
+use Selene\Modules\PagesModule\Models\Page;
 
 class Menu extends Model
 {
+    const ACTION_UPDATE = 'update';
+    const ACTION_DELETE = 'delete';
+
     protected $connection = 'mongodb';
     protected $collection = 'menu';
 
@@ -48,5 +52,38 @@ class Menu extends Model
             ->first();
 
         return $menu ? $menu->structure : [];
+    }
+
+    public static function getByPage($id) {
+        return self::query()
+            ->where('structure.id', '=', $id)
+            ->orWhere('structure.elements.id', '=', $id)
+            ->orWhere('structure.elements.elements.id', '=', $id)
+            ->orWhere('structure.elements.elements.elements.id', '=', $id)
+            ->get();
+    }
+
+    public static function changeMenu(Page $page, $action) {
+        foreach (self::getByPage($page->id) as $menu) {
+            $menu->structure = self::changeStructure($menu->structure, $page, $action);
+            $menu->save();
+        }
+    }
+
+    protected static function changeStructure($structure, Page $page, $action) {
+        foreach ($structure as $i => $item) {
+            if (isset($item['id']) && $item['id'] === $page->id) {
+                if ($action === self::ACTION_UPDATE) {
+                    $structure[$i]['name'] = $page->name;
+                    $structure[$i]['url']  = $page->permalink;
+                } else {
+                    unset($structure[$i]);
+                }
+            }
+            if (isset($structure['elements'])) {
+                $structure['elements'] = self::changeStructure($item['elements'], $page, $action);
+            }
+        }
+        return $structure;
     }
 }

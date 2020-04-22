@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <structure v-model="obj.structure"></structure>
+        <structure v-model="obj.structure" :lang="obj.lang.key"></structure>
 
     </form>
 </template>
@@ -49,7 +49,6 @@
             return {
                 langs: [],
                 mainLang: 'pl',
-                types: [],
                 obj: {
                     id: 0,
                     name: '',
@@ -92,25 +91,15 @@
                 return className;
             },
 
-            getTypes() {
-                axios.get('/dashboard/menu/types')
-                    .then(res => {
-                        this.types = res.data;
-                        this.getMenu();
-                    }).catch(err => {
-                    console.log(err)
-                })
-            },
-
             getMainLang() {
                 axios.get('/dashboard/settings/getByKey/lang')
                     .then(res => {
                         this.mainLang = res.data.value;
                         this.obj.lang = this.getItem(this.langs, 'key', this.mainLang);
-                        this.getTypes();
+                        this.getMenu();
                     }).catch(err => {
                         console.log(err);
-                        this.getTypes();
+                        this.getMenu();
                 });
             },
 
@@ -143,8 +132,6 @@
                     axios.get('/dashboard/menu/get?id=' + self._id)
                         .then(res => {
                             self.obj = res.data;
-
-                            self.obj.type = self.getItem(self.types, 'id', self.obj.type);
 
                             if (self.lang !== self.obj.lang) {
                                 self.obj.lang   = self.lang;
@@ -183,6 +170,19 @@
                     this.errors.name = ['To pole jest wymagane'];
                     return false;
                 }
+            },
+
+            checkName: function() {
+                axios.get('/dashboard/menu/check/' + this.obj.id + '?name=' + this.obj.name + '&lang=' + this.obj.lang.key)
+                    .then(res => {
+                        if (res.data) {
+                            this.errors.name = [];
+                        } else {
+                            this.errors.name = ['To pole musi być unikalne'];
+                        }
+                    }).catch(err => {
+                    console.log(err)
+                })
             }
         },
 
@@ -190,6 +190,8 @@
             'obj.name'() {
                 if (!this.obj.name) {
                     this.errors.name = ['To pole jest wymagane'];
+                } else {
+                    this.checkName();
                 }
             }
         }

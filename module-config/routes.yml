@@ -62,3 +62,10 @@ addTranslation:
   methods:
     - GET
   permission: MenuModule.menu
+
+check:
+  path: /dashboard/menu/check/{{id}}
+  controller: Selene\Modules\MenuModule\Http\Controllers\MenuController@check
+  methods:
+    - GET
+  permission: MenuModule.menu

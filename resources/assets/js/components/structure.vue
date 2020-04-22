@@ -9,11 +9,11 @@
             </div>
 
             <div class="card-body">
-                <nested v-model="elements"></nested>
+                <nested v-model="elements" :types="types" :lang="lang"></nested>
             </div>
         </div>
 
-        <modal id='0' :item="element" @save="add"></modal>
+        <modal id='0' :item="element" :types="types" :lang="lang" @save="add"></modal>
     </div>
 </template>
 
@@ -25,23 +25,39 @@
                 required: false,
                 type: Array,
                 default: []
+            },
+            lang: {
+                required: false,
+                type: String,
+                default: 'pl'
             }
         },
 
         data() {
             return {
-                element: {id: 0, name: '', url: '', elements: []},
-                elements: []
+                element: {id: 0, type: 'page', name: '', url: '', elements: []},
+                elements: [],
+                types: []
             };
         },
 
         created() {
-            this.elements = this.value;
+            this.getTypes();
         },
 
         methods: {
+
+            getTypes() {
+                axios.get('/dashboard/menu/types')
+                    .then(res => {
+                        this.types = res.data;
+                    }).catch(err => {
+                    console.log(err)
+                })
+            },
+
             add($event) {
-                this.elements.push({id: 0, name: $event.name, url: $event.url, elements: []});
+                this.elements.push({id: $event.id, name: $event.name, url: $event.url, type: $event.type, elements: []});
                 this.$bvModal.hide('0');
             }
         },

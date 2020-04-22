@@ -11,7 +11,8 @@
     "homepage": "https://github.com/zdrojowa/menu-module",
     "keywords": ["MenuModule", "Laravel", "Vue"],
     "require": {
-        "zdrojowa/pages-module": "^1.2"
+        "zdrojowa/cms-kernel": "^2.0",
+        "zdrojowa/dashboardmodule": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "~7.0",

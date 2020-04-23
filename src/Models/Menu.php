@@ -4,6 +4,7 @@ namespace Selene\Modules\MenuModule\Models;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 use Selene\Modules\PagesModule\Models\Page;
+use Selene\Modules\RevisionModule\Models\Revision;
 
 class Menu extends Model
 {
@@ -63,10 +64,19 @@ class Menu extends Model
             ->get();
     }
 
-    public static function changeMenu(Page $page, $action) {
+    public static function changeMenu(Page $page, $action, $userId) {
         foreach (self::getByPage($page->id) as $menu) {
             $menu->structure = self::changeStructure($menu->structure, $page, $action);
-            $menu->save();
+            if ($menu->save()) {
+                Revision::create([
+                    'table'      => 'menu',
+                    'action'     => 'auto',
+                    'content_id' => $menu->id,
+                    'content'    => json_encode($menu),
+                    'created_at' => now(),
+                    'user_id'    => $userId
+                ]);
+            }
         }
     }
 

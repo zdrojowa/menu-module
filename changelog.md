@@ -11,3 +11,6 @@ All notable changes to `MenuModule` will be documented in this file.
 
 ## Version 2.0.1
 - bugfix
+
+## Version 2.0.2
+- auto-update menu when page has changed

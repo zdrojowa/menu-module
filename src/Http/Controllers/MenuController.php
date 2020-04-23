@@ -81,13 +81,9 @@ class MenuController extends Controller {
 
     public function edit(Menu $menu) {
         return view('MenuModule::edit', [
-            'menu' => $menu,
-            'lang' => $menu->lang,
-            'revisions' => Revision::query()->where('table', '=', 'menu')
-                ->where('content_id', '=', $menu->_id)
-                ->orderByDesc('_id')
-                ->limit(50)
-                ->get()
+            'menu'      => $menu,
+            'lang'      => $menu->lang,
+            'revisions' => Revision::getByContent('manu', $menu->_id, 10)
         ]);
     }
 
@@ -165,7 +161,7 @@ class MenuController extends Controller {
             'created_at' => now(),
             'user_id' => $request->user()->id
         ]);
-        
+
         return $menu;
     }
 
@@ -186,7 +182,7 @@ class MenuController extends Controller {
                     }
                 }
             }
-            
+
             $menu->delete();
 
             Revision::create([

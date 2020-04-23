@@ -17,3 +17,6 @@ All notable changes to `MenuModule` will be documented in this file.
 
 ## Version 2.0.3
 - bugfix
+
+## Version 2.0.4
+- bugfix

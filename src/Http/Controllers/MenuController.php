@@ -83,7 +83,7 @@ class MenuController extends Controller {
         return view('MenuModule::edit', [
             'menu'      => $menu,
             'lang'      => $menu->lang,
-            'revisions' => Revision::getByContent('manu', $menu->_id, 10)
+            'revisions' => Revision::getByContent('menu', $menu->_id, 10)
         ]);
     }
 

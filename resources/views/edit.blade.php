@@ -3,6 +3,7 @@
 @section('title','Dashboard')
 
 @section('stylesheets')
+    <link rel="stylesheet" href="{{ mix('vendor/css/RevisionModule.css','') }}">
     <link rel="stylesheet" href="{{ mix('vendor/css/MenuModule.css','') }}">
 @endsection
 
@@ -17,18 +18,19 @@
                 <menu-editor :_id=`{{ $menu->_id }}` :lang=`{{ $lang }}`>
                     {{ csrf_field() }}
                 </menu-editor>
+                <div class="row">
+                    <div class="col-12 mt-2">
+                        @include('RevisionModule::revisions', [
+                            'table'      => 'menu',
+                            'content_id' => $menu->id
+                        ])
+                    </div>
+                </div>
             @else
                 <menu-editor :_id="0">
                     {{ csrf_field() }}
                 </menu-editor>
             @endif
-        </div>
-        <div class="row">
-            <div class="col-12 mt-2">
-                @include('RevisionModule::revisions', [
-                    'revisions' => $revisions ?? null
-                ])
-            </div>
         </div>
     </div>
 @endsection

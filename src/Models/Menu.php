@@ -85,6 +85,7 @@ class Menu extends Model
             if (isset($item['id']) && $item['id'] === $page->id) {
                 if ($action === self::ACTION_UPDATE) {
                     $structure[$i]['name'] = $page->name;
+                    $structure[$i]['title'] = $page->title;
                     $structure[$i]['url']  = $page->permalink;
                 } else {
                     unset($structure[$i]);

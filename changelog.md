@@ -26,3 +26,6 @@ All notable changes to `MenuModule` will be documented in this file.
 
 ## Version 2.0.6
 - refactoring
+
+## Version 2.0.7
+- add title for menu

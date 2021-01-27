@@ -58,6 +58,7 @@
             return {
                 isNew: true,
                 name: '',
+                title: '',
                 url: '',
                 type: {id: 'page', name: 'PAGE'},
                 page: null,
@@ -68,6 +69,7 @@
         created() {
             this.isNew = this.item.id === 0 && this.item.name === '' && this.item.url === '';
             this.name  = this.item.name;
+            this.title = this.item.title;
             this.url   = this.item.url;
 
             this.setType();
@@ -106,16 +108,18 @@
                 let page_id = 0;
 
                 if (this.type.id === 'page') {
-                    this.name = this.page.name;
-                    this.url  = this.page.permalink;
-                    page_id   = this.page.id;
+                    this.name   = this.page.name;
+                    this.title  = this.page.title;
+                    this.url    = this.page.permalink;
+                    page_id     = this.page.id;
                 }
 
-                this.$emit("save", {type: this.type.id, id: page_id, name: this.name, url: this.url});
+                this.$emit("save", {type: this.type.id, id: page_id, name: this.name, title: this.title, url: this.url});
 
                 this.type = {id: 'page', name: 'PAGE'};
                 this.page = null;
                 this.name = '';
+                this.title = '';
                 this.url  = '';
             },
 

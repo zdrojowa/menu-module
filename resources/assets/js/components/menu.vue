@@ -114,7 +114,6 @@
             },
 
             getItem(arr, key, val) {
-
                 let item = val;
 
                 arr.forEach(it => {

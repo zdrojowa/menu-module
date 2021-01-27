@@ -87,6 +87,7 @@
 
                 element.id            = $event.id;
                 element.name          = $event.name;
+                element.title         = $event.title;
                 element.url           = $event.url;
                 element.type          = $event.type;
                 this.realValue[index] = element;

@@ -35,7 +35,7 @@
 
         data() {
             return {
-                element: {id: 0, type: 'page', name: '', url: '', elements: []},
+                element: {id: 0, type: 'page', name: '', title: '', url: '', elements: []},
                 elements: [],
                 types: []
             };
@@ -57,7 +57,7 @@
             },
 
             add($event) {
-                this.elements.push({id: $event.id, name: $event.name, url: $event.url, type: $event.type, elements: []});
+                this.elements.push({id: $event.id, name: $event.name, title: $event.title, url: $event.url, type: $event.type, elements: []});
                 this.$bvModal.hide('0');
             }
         },

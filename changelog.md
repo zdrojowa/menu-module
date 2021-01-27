@@ -29,3 +29,6 @@ All notable changes to `MenuModule` will be documented in this file.
 
 ## Version 2.0.7
 - add title for menu
+
+## Version 2.0.8
+- fix item title update
